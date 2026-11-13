@@ -1,0 +1,9 @@
+{
+  "name": "esg-garden-forum-independent-clone",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "독립 계정 배포용 ESG정원정책포럼 복제 패키지",
+  "devDependencies": {"wrangler": "^4.0.0"},
+  "scripts": {"dev": "wrangler dev --config wrangler.target.jsonc", "deploy": "wrangler deploy --config wrangler.target.jsonc"}
+}

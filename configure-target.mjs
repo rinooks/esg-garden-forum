@@ -1,0 +1,12 @@
+import fs from 'node:fs';
+import path from 'node:path';
+const [accountId,databaseId]=process.argv.slice(2);
+if(!/^[a-f0-9]{32}$/.test(accountId||''))throw Error('대상 Account ID 32자리를 입력하세요.');
+if(accountId==='fff42139b43c8a63dd8bb4f5f98f64b3')throw Error('원본 계정에는 배포할 수 없습니다. 상대방 계정 ID를 입력하세요.');
+if(!/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(databaseId||''))throw Error('새 D1 데이터베이스 UUID를 입력하세요.');
+if(databaseId==='89b6bcbd-ebab-4638-97d0-911f836396d1')throw Error('원본 DB에는 연결할 수 없습니다.');
+const config={name:'esg-garden-forum',main:'src/worker.js',account_id:accountId,compatibility_date:'2026-11-01',workers_dev:true,assets:{directory:'./public',binding:'ASSETS',run_worker_first:true},d1_databases:[{binding:'DB',database_name:'esg-garden-forum-clone-db',database_id:databaseId}],triggers:{crons:['0 18 * * *']}};
+const out=path.resolve('wrangler.target.jsonc');
+fs.writeFileSync(out,JSON.stringify(config,null,2)+'\n',{flag:'wx'});
+console.log('대상 전용 설정 생성 완료: '+out);
+console.log('원본 계정 및 원본 DB 연결 차단 검사를 통과했습니다.');
